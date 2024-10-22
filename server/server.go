@@ -24,7 +24,7 @@ func (s *Server) Routes() {
 	{
 		post_controller := post_controller.New(s.db)
 
-		api.GET("/users", post_controller.Create)
+		api.POST("/users", post_controller.Create)
 	}
 
 	s.router.Run(":8080")
