@@ -27,5 +27,5 @@ func (pc *PostController) Create(context *gin.Context) {
 
 	pc.db.Create(&post)
 
-	context.JSON(200, "mensagem de retorno1")
+	context.JSON(201, gin.H{"message": "Usuário criado"})
 }
