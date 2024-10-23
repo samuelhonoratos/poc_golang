@@ -19,7 +19,6 @@ func New(db *gorm.DB) *PostController {
 
 func (pc *PostController) Index(context *gin.Context) {
 	var posts []entity.Post
-	var postResponseDTO []dto.PostResponseDTO
 
 	res := pc.db.Find(&posts)
 
@@ -31,17 +30,7 @@ func (pc *PostController) Index(context *gin.Context) {
 		return
 	}
 
-	for _, post := range posts {
-		postResponseDTO = append(postResponseDTO, dto.PostResponseDTO{
-			ID:    post.ID,
-			Title: post.Title,
-			Body:  post.Body,
-		})
-	}
-
-	context.AbortWithStatusJSON(http.StatusCreated, dto.IndexPostResponseDTO{
-		Posts: postResponseDTO,
-	})
+	context.AbortWithStatusJSON(http.StatusCreated, gin.H{"posts": posts})
 }
 
 func (pc *PostController) Create(context *gin.Context) {
