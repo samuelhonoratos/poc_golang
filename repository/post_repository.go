@@ -6,15 +6,20 @@ import (
 	"gorm.io/gorm"
 )
 
-type PostRepository struct {
+type PostRepository interface {
+	GetAllPosts() ([]entity.Post, error)
+	Create(post *entity.Post) error
+}
+
+type PostRepositoryImpl struct {
 	db *gorm.DB
 }
 
-func NewPostRepository(db *gorm.DB) *PostRepository {
-	return &PostRepository{db: db}
+func NewPostRepository(db *gorm.DB) *PostRepositoryImpl {
+	return &PostRepositoryImpl{db: db}
 }
 
-func (pr *PostRepository) GetAllPosts() ([]entity.Post, error) {
+func (pr *PostRepositoryImpl) GetAllPosts() ([]entity.Post, error) {
 	var posts []entity.Post
 
 	res := pr.db.Find(&posts)
@@ -26,7 +31,7 @@ func (pr *PostRepository) GetAllPosts() ([]entity.Post, error) {
 	return posts, nil
 }
 
-func (pr *PostRepository) Create(post *entity.Post) error {
+func (pr *PostRepositoryImpl) Create(post *entity.Post) error {
 	res := pr.db.Create(post)
 
 	if res.Error != nil {
