@@ -11,6 +11,8 @@ RUN go install -tags 'mysql' github.com/pressly/goose/v3/cmd/goose@latest
 COPY go.mod go.sum ./
 RUN go mod download
 
+COPY . .
+
 EXPOSE 8082
 
 CMD ["go", "run", "cmd/server/main.go"]

@@ -6,6 +6,7 @@ import (
 
 	"orcamento/repository"
 	"orcamento/server/controllers"
+	"orcamento/server/middlewares"
 	"orcamento/server/services"
 )
 
@@ -34,6 +35,8 @@ func (s *Server) ApiGroupRoute() {
 
 	api := s.router.Group("/api")
 	{
+		api.Use(middlewares.Logger())
+
 		api.GET("/posts", pc.Index)
 		api.POST("/post", pc.Create)
 	}
