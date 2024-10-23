@@ -5,26 +5,25 @@ import (
 	"orcamento/domain/entity"
 	"orcamento/server/dto"
 
+	post_service "orcamento/server/services"
+
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 type PostController struct {
-	db *gorm.DB
+	service post_service.PostService
 }
 
-func New(db *gorm.DB) *PostController {
-	return &PostController{db: db}
+func New(service post_service.PostService) *PostController {
+	return &PostController{service: service}
 }
 
 func (pc *PostController) Index(context *gin.Context) {
-	var posts []entity.Post
+	posts, err := pc.service.Index()
 
-	res := pc.db.Find(&posts)
-
-	if res.Error != nil {
+	if err != "" {
 		context.AbortWithStatusJSON(http.StatusCreated, dto.ErrorResponseDTO{
-			Message: res.Error.Error(),
+			Message: err,
 		})
 
 		return
@@ -42,15 +41,15 @@ func (pc *PostController) Create(context *gin.Context) {
 		Body:  postCreateDTO.Body,
 	}
 
-	res := pc.db.Create(&post)
+	// res := pc.db.Create(&post)
 
-	if res.Error != nil {
-		context.AbortWithStatusJSON(http.StatusCreated, dto.ErrorResponseDTO{
-			Message: res.Error.Error(),
-		})
+	// if res.Error != nil {
+	// 	context.AbortWithStatusJSON(http.StatusCreated, dto.ErrorResponseDTO{
+	// 		Message: res.Error.Error(),
+	// 	})
 
-		return
-	}
+	// 	return
+	// }
 
 	context.AbortWithStatusJSON(http.StatusCreated, post)
 }
