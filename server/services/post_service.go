@@ -2,26 +2,25 @@ package services
 
 import (
 	"orcamento/domain/entity"
+	"orcamento/repository"
 	"orcamento/server/dto"
-
-	"gorm.io/gorm"
 )
 
 type PostService struct {
-	db *gorm.DB
+	repository *repository.PostRepository
 }
 
-func NewPostService(db *gorm.DB) *PostService {
-	return &PostService{db: db}
+func NewPostService(repository *repository.PostRepository) *PostService {
+	return &PostService{repository: repository}
 }
 
 func (ps *PostService) Index() ([]entity.Post, error) {
 	var posts []entity.Post
 
-	res := ps.db.Find(&posts)
+	posts, err := ps.repository.GetAllPosts()
 
-	if res.Error != nil {
-		return nil, res.Error
+	if err != nil {
+		return nil, err
 	}
 
 	return posts, nil
@@ -33,10 +32,10 @@ func (ps *PostService) Create(payload dto.CreatePostDTO) (entity.Post, error) {
 		Body:  payload.Body,
 	}
 
-	res := ps.db.Create(&post)
+	err := ps.repository.Create(&post)
 
-	if res.Error != nil {
-		return entity.Post{}, res.Error
+	if err != nil {
+		return entity.Post{}, err
 	}
 
 	return post, nil
