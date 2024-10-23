@@ -1,11 +1,11 @@
 package server
 
 import (
-	post_controller "orcamento/server/controllers"
-	post_service "orcamento/server/services"
-
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+
+	"orcamento/server/controllers"
+	"orcamento/server/services"
 )
 
 type Server struct {
@@ -29,10 +29,10 @@ func (s *Server) Routes() {
 func (s *Server) ApiGroupRoute() {
 	api := s.router.Group("/api")
 	{
-		ps := post_service.New(s.db)
-		post_controller := post_controller.New(*ps)
+		ps := services.NewPostService(s.db)
+		pc := controllers.NewPostController(ps)
 
-		api.GET("/posts", post_controller.Index)
-		api.POST("/post", post_controller.Create)
+		api.GET("/posts", pc.Index)
+		api.POST("/post", pc.Create)
 	}
 }

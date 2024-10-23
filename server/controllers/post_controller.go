@@ -1,19 +1,18 @@
-package post_controller
+package controllers
 
 import (
 	"net/http"
 	"orcamento/server/dto"
-
-	post_service "orcamento/server/services"
+	"orcamento/server/services"
 
 	"github.com/gin-gonic/gin"
 )
 
 type PostController struct {
-	service post_service.PostService
+	service *services.PostService
 }
 
-func New(service post_service.PostService) *PostController {
+func NewPostController(service *services.PostService) *PostController {
 	return &PostController{service: service}
 }
 

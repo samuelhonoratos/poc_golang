@@ -1,4 +1,4 @@
-package post_service
+package services
 
 import (
 	"orcamento/domain/entity"
@@ -11,7 +11,7 @@ type PostService struct {
 	db *gorm.DB
 }
 
-func New(db *gorm.DB) *PostService {
+func NewPostService(db *gorm.DB) *PostService {
 	return &PostService{db: db}
 }
 
