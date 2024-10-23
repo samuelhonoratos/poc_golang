@@ -6,7 +6,7 @@ RUN apk add --update --no-cache curl
 
 WORKDIR /app
 
-RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+RUN go install -tags 'mysql' github.com/pressly/goose/v3/cmd/goose@latest
 
 COPY go.mod go.sum ./
 RUN go mod download
