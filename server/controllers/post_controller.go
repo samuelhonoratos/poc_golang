@@ -2,7 +2,6 @@ package post_controller
 
 import (
 	"net/http"
-	"orcamento/domain/entity"
 	"orcamento/server/dto"
 
 	post_service "orcamento/server/services"
@@ -21,9 +20,9 @@ func New(service post_service.PostService) *PostController {
 func (pc *PostController) Index(context *gin.Context) {
 	posts, err := pc.service.Index()
 
-	if err != "" {
+	if err != nil {
 		context.AbortWithStatusJSON(http.StatusCreated, dto.ErrorResponseDTO{
-			Message: err,
+			Message: err.Error(),
 		})
 
 		return
@@ -36,20 +35,15 @@ func (pc *PostController) Create(context *gin.Context) {
 	postCreateDTO := dto.CreatePostDTO{}
 	context.BindJSON(&postCreateDTO)
 
-	post := entity.Post{
-		Title: postCreateDTO.Title,
-		Body:  postCreateDTO.Body,
+	post, err := pc.service.Create(postCreateDTO)
+
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusCreated, dto.ErrorResponseDTO{
+			Message: err.Error(),
+		})
+
+		return
 	}
-
-	// res := pc.db.Create(&post)
-
-	// if res.Error != nil {
-	// 	context.AbortWithStatusJSON(http.StatusCreated, dto.ErrorResponseDTO{
-	// 		Message: res.Error.Error(),
-	// 	})
-
-	// 	return
-	// }
 
 	context.AbortWithStatusJSON(http.StatusCreated, post)
 }
