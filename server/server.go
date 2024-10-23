@@ -20,12 +20,17 @@ func New(db *gorm.DB) *Server {
 }
 
 func (s *Server) Routes() {
+	s.ApiGroupRoute()
+
+	s.router.Run(":8080")
+}
+
+func (s *Server) ApiGroupRoute() {
 	api := s.router.Group("/api")
 	{
 		post_controller := post_controller.New(s.db)
 
-		api.POST("/users", post_controller.Create)
+		api.GET("/posts", post_controller.Index)
+		api.POST("/post", post_controller.Create)
 	}
-
-	s.router.Run(":8080")
 }
