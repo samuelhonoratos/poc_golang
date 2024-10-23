@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// MockPostRepository is a mock type for the PostRepository type
 type MockPostRepository struct {
 	mock.Mock
 }
