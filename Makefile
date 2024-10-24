@@ -1,7 +1,7 @@
 .PHONY: status up down test
 
 status:
-	docker exec -it orcamento-app goose  status
+	docker exec -it orcamento-app goose status
 
 up:
 	docker exec -it orcamento-app goose up
