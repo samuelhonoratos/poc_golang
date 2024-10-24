@@ -1,17 +1,13 @@
-DATABASE_URL := "root:health@tcp(orcamento_db:3306)/orcamento_db?charset=utf8&parseTime=True&loc=Local"
+.PHONY: status up down test
 
-.PHONY: migration-status migrate-up migrate-down test
+status:
+	docker exec -it orcamento-app goose  status
 
-migration-status:
-	docker exec -it orcamento-app goose -dir di/database/migrations mysql $(DATABASE_URL) status
+up:
+	docker exec -it orcamento-app goose up
 
-migrate-up:
-	docker exec -it orcamento-app goose -dir di/database/migrations mysql $(DATABASE_URL) up
-
-migrate-down:
-	docker exec -it orcamento-app goose -dir di/database/migrations mysql $(DATABASE_URL) down
+down:
+	docker exec -it orcamento-app goose down
 
 test:
 	docker exec -it orcamento-app go test -v ./...
-
-
