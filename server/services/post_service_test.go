@@ -1,9 +1,10 @@
-package services
+package services_test
 
 import (
 	"errors"
 	"orcamento/domain/entity"
 	"orcamento/server/dto"
+	"orcamento/server/services"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -31,7 +32,7 @@ func (m *MockPostRepository) Create(post *entity.Post) error {
 
 func TestPostService_Index(t *testing.T) {
 	mockRepo := new(MockPostRepository)
-	service := NewPostService(mockRepo)
+	service := services.NewPostService(mockRepo)
 
 	mockPosts := []entity.Post{
 		{Title: "Post 1", Body: "Body 1"},
@@ -49,7 +50,7 @@ func TestPostService_Index(t *testing.T) {
 
 func TestPostService_Index_Error(t *testing.T) {
 	mockRepo := new(MockPostRepository)
-	service := NewPostService(mockRepo)
+	service := services.NewPostService(mockRepo)
 
 	mockPosts := []entity.Post{}
 	mockRepo.On("GetAllPosts").Return(mockPosts, errors.New("some error"))
@@ -63,7 +64,7 @@ func TestPostService_Index_Error(t *testing.T) {
 
 func TestPostService_Create(t *testing.T) {
 	mockRepo := new(MockPostRepository)
-	service := NewPostService(mockRepo)
+	service := services.NewPostService(mockRepo)
 
 	payload := dto.CreatePostDTO{
 		Title: "New Post",
@@ -86,7 +87,7 @@ func TestPostService_Create(t *testing.T) {
 
 func TestPostService_Create_Error(t *testing.T) {
 	mockRepo := new(MockPostRepository)
-	service := NewPostService(mockRepo)
+	service := services.NewPostService(mockRepo)
 
 	payload := dto.CreatePostDTO{
 		Title: "New Post",
